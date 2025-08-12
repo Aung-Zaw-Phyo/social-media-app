@@ -3,14 +3,14 @@ import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import { Request } from "express";
 import { throwCustomError } from "../../common/helper";
-import { UsersService } from "src/users/users.service";
+import { AuthService } from "../auth.service";
 
 @Injectable()
 export class AuthGuard implements CanActivate {
     constructor(
         private configService: ConfigService,
         private jwtService: JwtService,
-        private userService: UsersService,
+        private authService: AuthService,
     ){}
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -22,7 +22,7 @@ export class AuthGuard implements CanActivate {
         
         try {
             const payload = await this.jwtService.verifyAsync(token!, {secret: this.configService.get('JWT_SECRET')});// error occur
-            const user = await this.userService.getUser({email: payload.userEmail});
+            const user = await this.authService.getUser({email: payload.userEmail});
             if (!user) {
                 throwCustomError('Unauthenticated', HttpStatus.UNAUTHORIZED);
             }

@@ -5,6 +5,7 @@ import { UsersModule } from './users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { LoggerModule } from 'nestjs-pino';
 import { AuthModule } from './auth/auth.module';
+import { PostsModule } from './posts/posts.module';
 
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import { AuthModule } from './auth/auth.module';
       inject: [ConfigService]
     }),
     ConfigModule.forRoot({isGlobal: true}), 
-    UsersModule, AuthModule, 
+    UsersModule, AuthModule, PostsModule, 
   ],
   controllers: [AppController],
   providers: [AppService],

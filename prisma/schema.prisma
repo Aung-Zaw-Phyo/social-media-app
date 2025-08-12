@@ -20,6 +20,17 @@ model User {
   username  String   @unique
   email     String   @unique
   password  String
+  Post      Post[]
+  createdAt DateTime
+  updatedAt DateTime
+}
+
+model Post {
+  id        String   @unique @default(uuid())
+  content   String   @db.VarChar(500)
+  imageUrl  String?
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  String
   createdAt DateTime
   updatedAt DateTime
 }
