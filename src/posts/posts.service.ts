@@ -1,8 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from './../prisma/prisma.service';
 import { CreatePostDto } from './dto/requests/create-post.dto';
-import { Post, User } from 'generated/prisma';
+import { Post, User, Prisma } from 'generated/prisma';
 import { throwCustomError } from 'src/common/helper';
+import { PaginationDto } from './dto/requests/pagination.dto';
 
 @Injectable()
 export class PostsService {
@@ -10,8 +11,36 @@ export class PostsService {
         private readonly prismaService: PrismaService,
     ) {}
 
-    async getPosts() {
-        return this.prismaService.post.findMany();
+    async getPosts(paginationDto: PaginationDto) {
+        const page = paginationDto.page || 1;
+        const limit = paginationDto.limit || 10;
+        const search = paginationDto.search
+        const skip = (page - 1) * limit;
+
+        const where = search ? { 
+            OR: [ { content: { contains: search, mode: Prisma.QueryMode.insensitive } }, ],
+        } : undefined;
+
+        const [data, total] = await Promise.all([
+            this.prismaService.post.findMany({
+                skip,
+                take: limit,
+                where: where,
+            }),
+            this.prismaService.post.count({
+                where: where,
+            }),
+        ]);
+
+        return {
+            data,
+            meta: {
+                total,
+                page,
+                limit,
+                last_page: Math.ceil(total / limit)
+            }
+        };
     }
 
     async getPost(postId: string) {
