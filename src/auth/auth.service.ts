@@ -34,7 +34,9 @@ export class AuthService {
     }
 
     async login(data: LoginDto) {
-        const user = await this.getUser({email: data.email});
+        const user = await this.prismaService.user.findUnique({
+            where: {email: data.email}
+        });
         if(!user) {
             throwCustomError('Your credentials are incorrect!', HttpStatus.UNAUTHORIZED);
         }
@@ -96,11 +98,5 @@ export class AuthService {
                 updatedAt: new Date(),
             },
         });
-    }
-
-    async getUser(filter: Prisma.UserWhereUniqueInput): Promise<User | null> {
-        return this.prismaService.user.findUnique({
-            where: filter
-        })
     }
 }
