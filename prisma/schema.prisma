@@ -15,16 +15,27 @@ datasource db {
 }
 
 model User {
-  id        String    @unique @default(uuid())
-  name      String
-  username  String    @unique
-  email     String    @unique
-  password  String
-  Post      Post[]
-  Like      Like[]
+  id           String         @unique @default(uuid())
+  name         String
+  username     String         @unique
+  email        String         @unique
+  password     String
+  Post         Post[]
+  Like         Like[]
+  Comment      Comment[]
+  RefreshToken RefreshToken[]
+  createdAt    DateTime
+  updatedAt    DateTime
+}
+
+model RefreshToken {
+  id        String   @unique @default(uuid())
+  token     String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  expiresAt DateTime
   createdAt DateTime
   updatedAt DateTime
-  Comment   Comment[]
 }
 
 model Post {
