@@ -9,6 +9,7 @@ import { Prisma, User } from 'generated/prisma';
 import { ConfigService } from '@nestjs/config';
 import { RefreshTokenDto } from './dto/requests/refresh-token.dto';
 import { Serialize } from 'src/common/interceptors/serialize.interceptor';
+import { error } from 'console';
 
 @Injectable()
 export class AuthService {
@@ -20,7 +21,7 @@ export class AuthService {
 
     async register(data: RegisterDto) {
         try {
-            return await this.prismaService.user.create({
+            await this.prismaService.user.create({
                 data: {
                     ...data,
                     password: await bcrypt.hash(data.password, 10),
@@ -28,6 +29,7 @@ export class AuthService {
                     updatedAt: new Date(),
                 },
             })
+            return;
         } catch (err) {
             throw new HttpException('Something wrong!', HttpStatus.INTERNAL_SERVER_ERROR, err);
         }
@@ -66,6 +68,7 @@ export class AuthService {
 
     async logout(refreshToken: string) {
         await this.prismaService.refreshToken.deleteMany({ where: { token: refreshToken } });
+        return;
     }
 
     @Serialize()

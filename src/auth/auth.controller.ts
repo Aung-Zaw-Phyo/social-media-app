@@ -14,7 +14,7 @@ export class AuthController {
     @Post('/register')
     @Serialize({message: 'Successfully register.'})
     register(@Body() registerDto: RegisterDto) {
-        this.authService.register(registerDto);
+        return this.authService.register(registerDto);
     }
 
     @Post('/login')
