@@ -1,5 +1,6 @@
 import { Expose, Transform, Type } from "class-transformer";
 import { AuthorDto } from "./author.dto";
+import { CommentDto } from "src/comments/dto/responses/comment.dto";
 
 export class PostDto  {
     @Expose()
@@ -16,6 +17,10 @@ export class PostDto  {
 
     @Expose()
     isLikedByCurrentUser: boolean;
+
+    @Expose()
+    @Type(() => CommentDto)
+    comments: CommentDto[]
 
     @Expose()
     @Type(() => AuthorDto)

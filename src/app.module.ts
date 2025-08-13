@@ -7,6 +7,7 @@ import { LoggerModule } from 'nestjs-pino';
 import { AuthModule } from './auth/auth.module';
 import { PostsModule } from './posts/posts.module';
 import { LikesModule } from './likes/likes.module';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
   imports: [
@@ -24,7 +25,7 @@ import { LikesModule } from './likes/likes.module';
       inject: [ConfigService]
     }),
     ConfigModule.forRoot({isGlobal: true}), 
-    UsersModule, AuthModule, PostsModule, LikesModule, 
+    UsersModule, AuthModule, PostsModule, LikesModule, CommentsModule, 
   ],
   controllers: [AppController],
   providers: [AppService],

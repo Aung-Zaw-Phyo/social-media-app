@@ -7,6 +7,8 @@ import { PaginationDto } from './dto/requests/pagination.dto';
 import { PostDto } from './dto/responses/post.dto';
 import { UserGuard } from 'src/auth/guards/user.guard';
 import { PostsListDto } from './dto/responses/posts-list.dto';
+import { CreateCommentDto } from 'src/comments/dto/requests/create-coment.dto';
+import { CommentDto } from 'src/comments/dto/responses/comment.dto';
 
 @Controller('posts')
 export class PostsController {
@@ -46,15 +48,22 @@ export class PostsController {
 
     @Post('/:id/like')
     @UseGuards(AuthGuard)
-    @Serialize({dto: PostDto, message: 'Successfully like this post.'})
+    @Serialize({dto: PostDto, message: 'Liked this post successfully.'})
     likePost(@Param('id') id: string, @Req() req) {
         return this.postsService.likePost(id, req.user);
     }
 
     @Delete('/:id/like')
     @UseGuards(AuthGuard)
-    @Serialize({dto: PostDto, message: 'Successfully unlike this post.'})
+    @Serialize({dto: PostDto, message: 'Unlike this post successfully.'})
     unLikePost(@Param('id') id: string, @Req() req) {
         return this.postsService.unLikePost(id, req.user);
+    }
+
+    @Post('/:id/comment')
+    @UseGuards(AuthGuard)
+    @Serialize({dto: CommentDto, message: 'Commented this post successfully.'})
+    commentPost(@Param('id') id: string, @Body() data: CreateCommentDto, @Req() req) {
+        return this.postsService.commentPost(id, req.user, data);
     }
 }

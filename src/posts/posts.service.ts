@@ -5,11 +5,14 @@ import { User, Prisma } from 'generated/prisma';
 import { throwCustomError } from 'src/common/helper';
 import { PaginationDto } from './dto/requests/pagination.dto';
 import { LikesService } from 'src/likes/likes.service';
+import { CommentsService } from 'src/comments/comments.service';
+import { CreateCommentDto } from 'src/comments/dto/requests/create-coment.dto';
 
 @Injectable()
 export class PostsService {
     constructor(
         private readonly prismaService: PrismaService,
+        private readonly commentsService: CommentsService,
         private readonly likesService: LikesService,
     ) {}
 
@@ -71,7 +74,20 @@ export class PostsService {
                         id: true,
                         name: true,
                         username: true,
-                        email: true,
+                    }
+                },
+                Comment: {
+                    select: { 
+                        id: true,
+                        content: true,
+                        createdAt: true,
+                        user: {
+                            select: {
+                                id: true,
+                                name: true,
+                                username: true,
+                            }
+                        }
                     }
                 },
                 Like: {
@@ -86,6 +102,7 @@ export class PostsService {
         }
         return {
             ...post, 
+            comments: post!.Comment,
             likesCount: post!.Like.length, 
             isLikedByCurrentUser:  userId ? post!.Like.some(like => like.userId === userId) : false,
         };
@@ -100,22 +117,13 @@ export class PostsService {
                     createdAt: new Date(),
                     updatedAt: new Date(),
                 },
-                include: {
-                    author: {
-                        select: {
-                            id: true,
-                            name: true,
-                            username: true,
-                        }
-                    }
-                }
             })
         } catch (err) {
             throw new HttpException('Something wrong!', HttpStatus.INTERNAL_SERVER_ERROR, err);
         }
     }
 
-    async removePost(postId, user: User) {
+    async removePost(postId: string, user: User) {
         const post = await this.getPost(postId);
         if(post!.authorId !== user.id) {
             throwCustomError("You don't have permission to delete this post", HttpStatus.FORBIDDEN)
@@ -133,5 +141,11 @@ export class PostsService {
         await this.getPost(postId);
         await this.likesService.remove(postId, user.id);
         return this.getPost(postId, user.id);
+    }
+
+    async commentPost(postId: string, user: User, data: CreateCommentDto) {
+        await this.getPost(postId);
+        const comment = await this.commentsService.create(postId, user.id, data.content);
+        return comment;
     }
 }

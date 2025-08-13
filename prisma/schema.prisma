@@ -15,26 +15,28 @@ datasource db {
 }
 
 model User {
-  id        String   @unique @default(uuid())
+  id        String    @unique @default(uuid())
   name      String
-  username  String   @unique
-  email     String   @unique
+  username  String    @unique
+  email     String    @unique
   password  String
   Post      Post[]
   Like      Like[]
   createdAt DateTime
   updatedAt DateTime
+  Comment   Comment[]
 }
 
 model Post {
-  id        String   @unique @default(uuid())
-  content   String   @db.VarChar(500)
+  id        String    @unique @default(uuid())
+  content   String    @db.VarChar(500)
   imageUrl  String?
-  author    User     @relation(fields: [authorId], references: [id])
+  author    User      @relation(fields: [authorId], references: [id])
   authorId  String
   Like      Like[]
   createdAt DateTime
   updatedAt DateTime
+  Comment   Comment[]
 }
 
 model Like {
@@ -45,4 +47,15 @@ model Like {
   postId String
 
   @@unique([userId, postId])
+}
+
+model Comment {
+  id        String   @unique @default(uuid())
+  content   String   @db.VarChar(400)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    String
+  createdAt DateTime
+  updatedAt DateTime
 }
