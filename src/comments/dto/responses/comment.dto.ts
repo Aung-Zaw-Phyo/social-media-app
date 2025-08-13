@@ -9,6 +9,9 @@ export class CommentDto {
     content: string;
 
     @Expose()
+    isCommentedByCurrentUser: boolean;
+
+    @Expose()
     @Type(() => CommenterDto)
     user: CommenterDto;
 

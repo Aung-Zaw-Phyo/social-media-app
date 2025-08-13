@@ -100,9 +100,13 @@ export class PostsService {
         if(!post) {
             throwCustomError('Post not found.', HttpStatus.NOT_FOUND);
         }
+        const comments = post!.Comment.map((comment) => ({
+            ...comment,
+            isCommentedByCurrentUser: userId ? comment.user.id === userId : false, 
+        }))
         return {
             ...post, 
-            comments: post!.Comment,
+            comments: comments,
             likesCount: post!.Like.length, 
             isLikedByCurrentUser:  userId ? post!.Like.some(like => like.userId === userId) : false,
         };
