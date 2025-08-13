@@ -3,10 +3,10 @@ import { PostsController } from './posts.controller';
 import { PostsService } from './posts.service';
 import { PrismaModule } from 'src/prisma/prisma.module';
 import { AuthModule } from 'src/auth/auth.module';
-import { UsersModule } from 'src/users/users.module';
+import { LikesModule } from 'src/likes/likes.module';
 
 @Module({
-  imports: [PrismaModule, AuthModule],
+  imports: [PrismaModule, AuthModule, LikesModule],
   controllers: [PostsController],
   providers: [PostsService]
 })

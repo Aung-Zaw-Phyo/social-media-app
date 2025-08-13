@@ -1,4 +1,5 @@
-import { Expose, Transform } from "class-transformer";
+import { Expose, Transform, Type } from "class-transformer";
+import { AuthorDto } from "./author.dto";
 
 export class PostDto  {
     @Expose()
@@ -8,7 +9,17 @@ export class PostDto  {
     content: string;
 
     @Expose()
-    imageUrl: string;
+    imageUrl?: string;
+
+    @Expose()
+    likesCount: number;
+
+    @Expose()
+    isLikedByCurrentUser: boolean;
+
+    @Expose()
+    @Type(() => AuthorDto)
+    author: AuthorDto;
 
     @Expose()
     @Transform(({ value }) => value ? new Date(value).toLocaleString() : null)

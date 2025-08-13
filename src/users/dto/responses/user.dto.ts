@@ -15,9 +15,9 @@ export class UserDto {
     
     @Expose()
     @Transform(({ value }) => value ? new Date(value).toLocaleString() : null)
-    createdAt: Date;
+    createdAt?: Date;
 
     @Expose()
     @Transform(({ value }) => value ? new Date(value).toLocaleString() : null)
-    updatedAt: Date;
+    updatedAt?: Date;
 }

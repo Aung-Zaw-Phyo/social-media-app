@@ -21,6 +21,7 @@ model User {
   email     String   @unique
   password  String
   Post      Post[]
+  Like      Like[]
   createdAt DateTime
   updatedAt DateTime
 }
@@ -31,6 +32,17 @@ model Post {
   imageUrl  String?
   author    User     @relation(fields: [authorId], references: [id])
   authorId  String
+  Like      Like[]
   createdAt DateTime
   updatedAt DateTime
+}
+
+model Like {
+  id     String @unique @default(uuid())
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId String
+
+  @@unique([userId, postId])
 }

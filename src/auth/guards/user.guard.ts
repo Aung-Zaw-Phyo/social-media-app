@@ -1,12 +1,11 @@
-import { CanActivate, ExecutionContext, HttpStatus, Injectable } from "@nestjs/common";
+import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import { Request } from "express";
-import { throwCustomError } from "../../common/helper";
 import { AuthService } from "../auth.service";
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class UserGuard implements CanActivate {
     constructor(
         private configService: ConfigService,
         private jwtService: JwtService,
@@ -16,21 +15,17 @@ export class AuthGuard implements CanActivate {
     async canActivate(context: ExecutionContext): Promise<boolean> {
         const request = context.switchToHttp().getRequest();
         const token = this.extractTokenFromHeader(request);
-        if(!token) {
-            throwCustomError('Unauthenticated', HttpStatus.UNAUTHORIZED);
-        }
-        
+        if (!token) return true; 
         try {
-            const payload = await this.jwtService.verifyAsync(token!, {secret: this.configService.get('JWT_SECRET')});
-            const user = await this.authService.getUser({email: payload.userEmail});
-            if (!user) {
-                throwCustomError('Unauthenticated', HttpStatus.UNAUTHORIZED);
-            }
-            request['user'] = user;
+            const payload = await this.jwtService.verifyAsync(
+                token, 
+                { secret: this.configService.get('JWT_SECRET') }
+            );
+            const user = await this.authService.getUser({ email: payload.userEmail });
+            request.user = user || undefined; 
         } catch (error) {
-            throwCustomError('Unauthenticated', HttpStatus.UNAUTHORIZED);
+            return true;
         }
-
         return true;
     }
 
