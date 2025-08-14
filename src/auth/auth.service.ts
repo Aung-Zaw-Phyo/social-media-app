@@ -1,15 +1,13 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { RegisterDto } from './dto/requests/register.dto';
 import { LoginDto } from './dto/requests/login.dto';
 import { throwCustomError } from 'src/common/helper';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Prisma, User } from 'generated/prisma';
 import { ConfigService } from '@nestjs/config';
 import { RefreshTokenDto } from './dto/requests/refresh-token.dto';
 import { Serialize } from 'src/common/interceptors/serialize.interceptor';
-import { error } from 'console';
 
 @Injectable()
 export class AuthService {
@@ -31,7 +29,7 @@ export class AuthService {
             })
             return;
         } catch (err) {
-            throw new HttpException('Something wrong!', HttpStatus.INTERNAL_SERVER_ERROR, err);
+            throwCustomError("Something wrong", HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 

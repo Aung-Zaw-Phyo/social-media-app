@@ -25,7 +25,7 @@ export class LikesService {
             if (err.code === 'P2002') {
                 throwCustomError('You have already liked this post', HttpStatus.CONFLICT);
             }
-            throw err;
+            throwCustomError("Something wrong", HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 

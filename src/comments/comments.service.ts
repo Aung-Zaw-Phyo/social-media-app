@@ -21,7 +21,7 @@ export class CommentsService {
             })
             return comment;
         } catch (err) {
-            throw new HttpException('Something wrong!', HttpStatus.INTERNAL_SERVER_ERROR, err);
+            throwCustomError("Something wrong", HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 
