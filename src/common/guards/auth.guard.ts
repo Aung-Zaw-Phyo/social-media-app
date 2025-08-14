@@ -2,7 +2,7 @@ import { CanActivate, ExecutionContext, HttpStatus, Injectable } from "@nestjs/c
 import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import { Request } from "express";
-import { throwCustomError } from "../../common/helper";
+import { throwCustomError } from "../helper";
 import { PrismaService } from "src/prisma/prisma.service";
 
 @Injectable()

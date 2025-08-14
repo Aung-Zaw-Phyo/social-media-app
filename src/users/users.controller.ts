@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
-import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { AuthGuard } from 'src/common/guards/auth.guard';
 import { Serialize } from 'src/common/interceptors/serialize.interceptor';
 import { UserDto } from './dto/responses/user.dto';
 import { ApiErrorResponse, ApiSuccessResponse } from 'src/common/decorators/api-response.decorator';

@@ -1,6 +1,6 @@
 import { Controller, Delete, Param, Req, UseGuards } from '@nestjs/common';
 import { CommentsService } from './comments.service';
-import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { AuthGuard } from 'src/common/guards/auth.guard';
 import { Serialize } from 'src/common/interceptors/serialize.interceptor';
 import { CommentDto } from './dto/responses/comment.dto';
 import { ApiBearerAuth, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
