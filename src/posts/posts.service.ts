@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from './../prisma/prisma.service';
 import { CreatePostDto } from './dto/requests/create-post.dto';
 import { User, Prisma } from 'generated/prisma';
@@ -118,8 +118,6 @@ export class PostsService {
                 data: {
                     ...data,
                     authorId: user.id,
-                    createdAt: new Date(),
-                    updatedAt: new Date(),
                 },
                 include: {
                     author: true

@@ -23,8 +23,6 @@ export class AuthService {
                 data: {
                     ...data,
                     password: await bcrypt.hash(data.password, 10),
-                    createdAt: new Date(),
-                    updatedAt: new Date(),
                 },
             })
             return;
@@ -95,8 +93,6 @@ export class AuthService {
                 token: refreshToken,
                 userId,
                 expiresAt: new Date(Date.now() + 6 * 60 * 1000), 
-                createdAt: new Date(),
-                updatedAt: new Date(),
             },
         });
     }

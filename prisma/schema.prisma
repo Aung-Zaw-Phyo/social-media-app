@@ -24,8 +24,8 @@ model User {
   Like         Like[]
   Comment      Comment[]
   RefreshToken RefreshToken[]
-  createdAt    DateTime
-  updatedAt    DateTime
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @default(now())
 }
 
 model RefreshToken {
@@ -34,8 +34,8 @@ model RefreshToken {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
   expiresAt DateTime
-  createdAt DateTime
-  updatedAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 }
 
 model Post {
@@ -45,17 +45,19 @@ model Post {
   author    User      @relation(fields: [authorId], references: [id])
   authorId  String
   Like      Like[]
-  createdAt DateTime
-  updatedAt DateTime
   Comment   Comment[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
 }
 
 model Like {
-  id     String @unique @default(uuid())
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
-  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
-  postId String
+  id        String   @unique @default(uuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 
   @@unique([userId, postId])
 }
@@ -67,6 +69,6 @@ model Comment {
   userId    String
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId    String
-  createdAt DateTime
-  updatedAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 }

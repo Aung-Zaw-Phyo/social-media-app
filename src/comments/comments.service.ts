@@ -15,8 +15,6 @@ export class CommentsService {
                     postId,
                     userId,
                     content,
-                    createdAt: new Date(),
-                    updatedAt: new Date(),
                 },
             })
             return comment;
