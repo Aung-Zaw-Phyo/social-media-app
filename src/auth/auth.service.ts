@@ -43,7 +43,7 @@ export class AuthService {
             throwCustomError('Your credentials are incorrect!', HttpStatus.UNAUTHORIZED);
         }
         if(!(await bcrypt.compare(data.password, user!.password))) {
-            throwCustomError('Your password is incorrect!', HttpStatus.UNAUTHORIZED);
+            throwCustomError('Your credentials are incorrect!', HttpStatus.UNAUTHORIZED);
         }
         const tokens = await this.generateTokens(user!.id, user!.email);
         await this.storeRefreshToken(user!.id, tokens.refreshToken);
@@ -77,14 +77,14 @@ export class AuthService {
             {sub: userId, email}, 
             {
                 secret: this.configService.getOrThrow<string>('JWT_ACCESS_SECRET'), 
-                expiresIn: '2m',
+                expiresIn: '30m',
             }
         );
         const refreshToken = await this.jwtService.sign(
             {sub: userId, email}, 
             {
                 secret: this.configService.getOrThrow<string>('JWT_REFRESH_SECRET'), 
-                expiresIn: '4m',
+                expiresIn: '1h',
             }
         );
 

@@ -19,7 +19,7 @@ export class UserGuard implements CanActivate {
         try {
             const payload = await this.jwtService.verifyAsync(
                 token, 
-                { secret: this.configService.get('JWT_SECRET') }
+                { secret: this.configService.get('JWT_ACCESS_SECRET') }
             );
             const user = await this.prismaService.user.findUnique({where: {email: payload.email}});
             request.user = user || undefined; 

@@ -35,6 +35,6 @@ export class CommentsService {
         if(comment!.userId !== userId) {
             throwCustomError("You don't have permission to delete this comment", HttpStatus.FORBIDDEN)
         }
-        return comment;
+        return this.prismaService.comment.delete({where: {id: commentId}});
     }
 }

@@ -10,8 +10,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const exceptionResponse: any = exception.getResponse();
     response.status(status).json({
       success: false,
-      messages: exceptionResponse.message || 'An error occurred',
-      error: exceptionResponse.error || 'Server error',
+      message: exceptionResponse.message || 'An error occurred',
+      error: exceptionResponse.error || null,
       statusCode: status,
       data: null,
     });

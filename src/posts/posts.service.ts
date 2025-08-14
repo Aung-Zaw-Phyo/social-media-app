@@ -121,6 +121,9 @@ export class PostsService {
                     createdAt: new Date(),
                     updatedAt: new Date(),
                 },
+                include: {
+                    author: true
+                }
             })
         } catch (err) {
             throw new HttpException('Something wrong!', HttpStatus.INTERNAL_SERVER_ERROR, err);

@@ -4,7 +4,7 @@ import { map, Observable } from "rxjs";
 
 interface ResponseData {
   success: boolean;
-  messages: string;
+  message: string;
   error: string | null;
   statusCode: number;
   data: any;
@@ -24,7 +24,7 @@ class SerializeInterceptor implements NestInterceptor {
                 const formatedData = this.dto ? plainToClass(this.dto, data, {excludeExtraneousValues: true}) : data;
                 return {
                     success: statusCode >= 200 && statusCode < 300,
-                    messages: this.message || 'success',
+                    message: this.message || 'success',
                     error: null,
                     statusCode,
                     data: formatedData || null,
