@@ -107,6 +107,7 @@ export class PostsController {
     @ApiSuccessResponse('Commented this post successfully.', 201, CommentDto)
     @ApiErrorResponse('Unauthenticated', 401, 'Unauthenticated')
     @ApiErrorResponse('Post not found.', 404, "Not found")
+    @ApiErrorResponse(['content is required.'], 400, "Bad request")
     @UseGuards(AuthGuard)
     @Serialize({dto: CommentDto, message: 'Commented this post successfully.'})
     commentPost(@Param('id') id: string, @Body() data: CreateCommentDto, @Req() req) {

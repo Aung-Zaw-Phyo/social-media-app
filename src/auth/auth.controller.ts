@@ -43,7 +43,7 @@ export class AuthController {
 
     @Post('/refresh')
     @ApiOperation({summary: "Token refresh"})
-    @ApiSuccessResponse('Token refresh.', 201)
+    @ApiSuccessResponse('Token refresh.', 201, TokensDto)
     @ApiErrorResponse('Invalid refresh token', 403, 'Forbidden')
     @ApiErrorResponse("Refresh token expired", 403, "Forbidden")
     @Serialize({dto: TokensDto, message: "Token refresh."})

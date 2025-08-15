@@ -30,7 +30,7 @@ export class LikesService {
     }
 
     async remove(postId: string, userId: string) {
-        const like = await this.prismaService.like.delete({
+        const like = await this.prismaService.like.findUnique({
             where: {
                 userId_postId: {
                     userId,
@@ -41,6 +41,8 @@ export class LikesService {
         if(!like) {
             throwCustomError("Like not found.", HttpStatus.NOT_FOUND);
         }
-        return like;
+        return this.prismaService.like.delete({
+            where: { userId_postId: { userId, postId } }
+        });
     }
 }

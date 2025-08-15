@@ -73,14 +73,14 @@ export class AuthService {
             {sub: userId, email}, 
             {
                 secret: this.configService.getOrThrow<string>('JWT_ACCESS_SECRET'), 
-                expiresIn: '30m',
+                expiresIn: '1m',
             }
         );
         const refreshToken = await this.jwtService.sign(
             {sub: userId, email}, 
             {
                 secret: this.configService.getOrThrow<string>('JWT_REFRESH_SECRET'), 
-                expiresIn: '1h',
+                expiresIn: '1m',
             }
         );
 
@@ -92,7 +92,7 @@ export class AuthService {
             data: {
                 token: refreshToken,
                 userId,
-                expiresAt: new Date(Date.now() + 6 * 60 * 1000), 
+                expiresAt: new Date(Date.now() + 1 * 60 * 1000), 
             },
         });
     }
